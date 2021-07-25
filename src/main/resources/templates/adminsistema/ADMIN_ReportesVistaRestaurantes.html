@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>Spicyo</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <!-- owl css -->
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
+    <!-- style css -->
+    <link rel="stylesheet" th:href="@{/css/styleAdminView.css}" />
+    <!-- responsive-->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}" />
+    <!-- awesome fontfamily -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <style>
+        .form-control {
+            border: #fff solid 2px;
+            border-radius: inherit;
+            margin-bottom: 0px;
+            padding: 15px 20px;
+            font-family: poppins;
+        }
+    </style>
+</head>
+<!-- body -->
+
+<body class="main-layout">
+    <!-- loader  -->
+    <div class="loader_bg">
+        <div class="loader"><img src="images/loading.gif" alt="" /></div>
+    </div>
+
+    <div class="wrapper">
+    <!-- end loader -->
+
+     <div th:replace="fragments/adminSistema.html:: slider" class="sidebar">
+        </div>
+
+    <div id="content">
+    <!-- header -->
+    <header>
+        <div th:replace="fragments/adminSistema.html:: barra" class="container-fluid">
+        </div>
+    </header>
+    <!-- end header -->
+
+    <!-- blog -->
+    <div class="blog">
+        <div class="container">
+            <div class="row">
+				
+				<div class="col-8">
+                    <h1>Reporte de Venta de Restaurantes</h1>
+                </div>
+				<div class="col-4">
+					<div class="d-flex justify-content-end">
+                        <a  class="btn btn-outline-success" th:href="@{exportarRestaurante}">Exportar a Excel</a>
+					</div>
+                </div>
+
+                <div class="col-7">
+                    <h1></h1>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <div class="col-5">
+                        <button th:if="${msg != null}" th:text="${msg}" class="btn btn-dark" role="alert"></button>
+                    </div>
+
+                </div>
+            </div>
+
+			<hr>
+            <div class="col-md-12">
+                <form class="input-group" method="post" th:action="@{RestaurantesBuscador}">
+                    <div class="col-md-10" style="margin-bottom: 0px;">
+                        <div class="form-floating" style=" border-style: groove;margin-bottom: 0px">
+                            <input name="searchField" class="form-control" id="floatingInputGrid" type="text" placeholder="Buscar por nombre, apellidos o DNI"/>
+                            <label for="floatingInputGrid">Buscar restaurante</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-dark" type="submit" >Buscar</button>
+                    <button class="btn btn-warning"><a class="button active" th:href="@{/admin/RestaurantesReportes}">Limpiar</a></button>
+
+                </form>
+            </div>
+            <br>
+            <div class="row table-users">
+                <!-- table -->
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Restaurante</th>
+                                <th scope="col">Encargado</th>
+                                <th scope="col">Pedidos Completados</th>
+                                <th scope="col">Ventas Totales S/.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="restaurante,info : ${reporteLista}">
+                                    <td scope="row" th:text="${info.index + 1}"></td>
+                                    <td th:text="${restaurante.restnombre}"></td>
+                                    <td th:text="${restaurante.nombre + ' ' + restaurante.apellidos}"></td>
+                                    <td th:text="${restaurante.pedidos}"></td>
+                                    <td th:text="${restaurante.ventastotales}"></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+                <!-- end of table -->
+                <!-- paginacion -->
+                <div th:if="${maxNumberOfPages} != 0" class="row">
+                    <nav aria-label="Page navigation example" class = "mx-auto">
+                        <ul class="pagination justify-content-center">
+
+                            <!--  BOTON ANTERIOR -->
+                            <li class="page-item disabled" th:if="${currentPage eq 1 }">
+                                <span class="page-link">Anterior</span>
+                            </li>
+                            <li class="page-item" th:unless="${currentPage eq 1}">
+                                <a class="page-link"
+                                   th:href="@{/admin/RestaurantesReportes(page=${currentPage - 1})}">Anterior</a>
+                            </li>
+
+                            <!-- BOTONES NUMEROS -->
+                            <li th:each="i : ${#numbers.sequence( 1, maxNumberOfPages )}"
+                                th:class="${ i == currentPage ? 'page-item active .bg-secondary' : 'page-item' }">
+                                <a class="page-link"  th:href="@{/admin/RestaurantesReportes(page=${i})}"
+                                   th:text="${i}"
+                                ></a>
+                            </li>
+
+                            <!--  BOTON SIGUIENTE -->
+                            <li class="page-item disabled" th:if="${currentPage eq maxNumberOfPages }">
+                                <span class="page-link">Siguiente</span>
+                            </li>
+                            <li class="page-item" th:unless="${currentPage eq maxNumberOfPages}">
+                                <a class="page-link" th:href="@{/admin/RestaurantesReportes(page=${currentPage + 1})}">Siguiente</a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+			<hr>
+			<div class="col-8">
+                    <h3>Datos sobre los restaurantes</h3>
+                </div>
+			<div class="row table-users">
+				<div class="col-md-12">
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+									<th scope="col">#</th>
+									<th scope="col">Restaurante</th>
+									<th scope="col">Encargado</th>
+									<th scope="col">Ventas Totales S/.</th>
+									<th scope="col">Observación</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+									<th scope="row">1</th>
+									<td th:text="${mayorrest.restnombre}"> </td>
+									<td th:text="${mayorrest.nombre + ' ' + mayorrest.apellidos}"></td>
+									<td th:text="${mayorrest.ventastotales}"></td>
+									<td>Restaurante con más ventas</td>
+									</tr>
+								</tbody>
+								<tbody>
+									<tr>
+									<th scope="row">2</th>
+									<td th:text="${menorrest.restnombre}"></td>
+									<td th:text="${menorrest.nombre+' '+menorrest.apellidos}"></td>
+									<td th:text="${menorrest.ventastotales}"></td>
+									<td>Restaurante con menos Ventas</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+			</div>
+            <hr>
+            <li class="button_user"><a class="button active" th:href="@{reportes}" > Regresar </a></li>
+        </div>
+    </div>
+    </div>
+    <!-- end blog -->
+
+    <!-- footer -->
+        <fooetr>
+            <div class="footer">
+
+                <div class="copyright">
+                    <div class="container">
+                        <p>© 2021 Todos los derechos reservados</p>
+                    </div>
+                </div>
+            </div>
+        </fooetr>
+    <!-- end footer -->
+
+    </div>
+    </div>
+    <div class="overlay"></div>
+    <!-- Javascript files-->
+    <script th:src="@{/js/jquery.min.js}" ></script>
+    <script th:src="@{/js/popper.min.js}" ></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}" ></script>
+    <script th:src="@{/js/owl.carousel.min.js}" ></script>
+    <script th:src="@{/js/custom.js}" ></script>
+    <script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}" ></script>
+    
+    <script src="js/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#dismiss, .overlay').on('click', function() {
+                $('#sidebar').removeClass('active');
+                $('.overlay').removeClass('active');
+            });
+
+            $('#sidebarCollapse').on('click', function() {
+                $('#sidebar').addClass('active');
+                $('.overlay').addClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+    </script>
+
+    <style>
+    #owl-demo .item{
+        margin: 3px;
+    }
+    #owl-demo .item img{
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    </style>
+
+     
+    <script>
+         $(document).ready(function() {
+           var owl = $('.owl-carousel');
+           owl.owlCarousel({
+             margin: 10,
+             nav: true,
+             loop: true,
+             responsive: {
+               0: {
+                 items: 1
+               },
+               600: {
+                 items: 2
+               },
+               1000: {
+                 items: 5
+               }
+             }
+           })
+         })
+      </script>
+
+</body>
+
+</html>

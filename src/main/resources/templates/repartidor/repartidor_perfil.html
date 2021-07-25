@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <!-- bhead -->
+    <head th:replace="fragments/fragment.html :: header( title = 'Reporte general')"></head>
+    <!-- body -->
+    <style>
+        label{
+            color: white;
+        }
+    </style>
+
+    <body class="main-layout">
+        <!-- loader  -->
+        <!---div class="loader_bg">
+            <div class="loader"><img th:src="@{/images/loading.gif}" alt="" /></div>
+
+        </div-->
+
+        <div class="wrapper">
+            <!-- end loader -->
+            <div class="sidebar">
+                <!-- Sidebar  -->
+                <nav id="sidebar">
+
+                    <div id="dismiss">
+                        <i class="fa fa-arrow-left"></i>
+                    </div>
+
+                    <ul class="list-unstyled components">
+
+                        <li class="active">
+                            <a th:href="@{'/repartidor'}">Home</a>
+                        </li>
+                        <li>
+                            <a th:href="@{'/repartidor/Reportes'}">Reportes</a>
+                        </li>
+                        <li>
+                            <a th:href="@{'/repartidor/PedidosDisponibles'}">Notificaciones</a>
+                        </li>
+
+                    </ul>
+
+                </nav>
+            </div>
+
+        </div>
+            <div id="content">
+
+                <!-- header -->
+                <header th:replace="fragments/fragment.html :: navbar"></header>
+                <!-- end header -->
+
+                <div class="yellow_bg" style="margin-top: 30px;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="title">
+                                    <h2>Mi Perfil</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- about -->
+                <div class="about">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div th:if="${msgR != null}" th:text="${msgR}" class="alert alert-success" role="alert"></div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 about_img_boxpdnt">
+                                        <figure><img th:src="@{/repartidor/imagen}" alt="#/"></figure>                                    </div>
+
+                                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                        <form method="post" th:action="@{/repartidor/save_perfil}" th:object="${usuario}" enctype="multipart/form-data">
+                                            <div class="about_box" style="padding: 64px 40px">
+                                                <div>
+                                                    <input th:field="*{idusuarios}" type="hidden">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <label>Correo</label>
+                                                        <input class="form-control" type="text" th:field="*{email}" disabled>
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <label>Nombres</label>
+                                                        <input class="form-control"type="text" th:field="*{nombre}" disabled>
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <label>Apellidos</label>
+                                                        <input class="form-control"type="text" th:field="*{apellidos}" disabled>
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <label>DNI</label>
+                                                        <input class="form-control" type="text" th:field="*{dni}" disabled>
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <label>Número de celular</label>
+                                                        <div th:if="${msgT != null}" th:text="${msgT}" class="text-danger"></div>
+                                                        <input class="form-control" type="number" th:field="*{telefono}">
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <label>Fecha de nacimiento</label>
+                                                        <input class="form-control" type="date" th:field="*{fechaNacimiento}" disabled>
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <label>Dirección </label>
+                                                        <input class="form-control" type="text" th:value="|${direcciones.direccion} - ${distritoUsuario.nombredistrito}|"
+                                                        name="direccion">
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <label>Foto </label>
+                                                        <input type="file" class="form-control" id="archivo" name="archivo"/>
+                                                        <div th:if="${msg != null}" th:text="${msg}" class="text-danger"></div>
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <label>Contraseña</label>
+                                                        <input placeholder="Passsword" class="form-control" type="password" th:value="*{contraseniaHash}"
+                                                               name="contraseniaHash">
+                                                        <div th:if="${msgc1 != null}" th:text="${msgc1}" class="text-danger"></div>
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <label>Confirmar contraseña</label>
+                                                        <input placeholder="Passsword" class="form-control" type="password" name="password2">
+                                                        <div th:if="${msgc2 != null}" th:text="${msgc2}" class="text-danger"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div style="padding-left: 15px;padding-top: 25px">
+                                                                <button class="send" type="submit"
+                                                                        style="font-size: 16px;background: #d8b00f;width: 200px">Guardar cambios</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end about -->
+
+
+                <!-- footer -->
+                <fooetr>
+                    <div class="footer">
+
+                        <div class="copyright">
+                            <div class="container">
+                                <p>© 2021 Todos los derechos reservados</p>
+                            </div>
+                        </div>
+                    </div>
+                </fooetr>
+                <!-- end footer -->
+
+            </div>
+        </div>
+        <div class="overlay"></div>
+        <!-- Javascript files-->
+        <script th:href="@{/js/jquery.min.js}"></script>
+        <script th:href="@{/js/popper.min.js}"></script>
+        <script th:href="@{/js/bootstrap.bundle.min.js}"></script>
+        <script th:href="@{/js/owl.carousel.min.js}"></script>
+        <script th:href="@{/js/custom.js}"></script>
+        <script th:href="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+
+        <script th:href="@{/js/jquery-3.0.0.min.js}"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#sidebar").mCustomScrollbar({
+                    theme: "minimal"
+                });
+
+                $('#dismiss, .overlay').on('click', function() {
+                    $('#sidebar').removeClass('active');
+                    $('.overlay').removeClass('active');
+                });
+
+                $('#sidebarCollapse').on('click', function() {
+                    $('#sidebar').addClass('active');
+                    $('.overlay').addClass('active');
+                    $('.collapse.in').toggleClass('in');
+                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                });
+            });
+        </script>
+
+    </body>
+
+</html>

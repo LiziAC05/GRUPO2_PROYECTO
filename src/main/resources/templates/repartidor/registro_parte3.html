@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <!-- basic -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- mobile metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+        <!-- site metas -->
+        <title>Spicyo   </title>
+        <!-- bootstrap css -->
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <!-- owl css -->
+        <link rel="stylesheet" href="/css/owl.carousel.min.css">
+        <!-- style css -->
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <!-- responsive-->
+        <link rel="stylesheet" href="/css/responsive.css">
+        <!-- awesome fontfamily -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+        <!--link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+              integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+              crossorigin="anonymous"-->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script async
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLdwYvQItwrhBKLPqbEumrEURYFFlks-Y">
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
+        <style>
+            #map{
+                height:400px;
+                width: 100%
+            }
+            label{
+                color: black;
+            }
+        </style>
+        <style>
+            .form-select:focus {
+                border-color: #ffffff !important;
+                box-shadow: 0 0 0 .2rem rgba(255, 255, 255, .25);
+            }
+            .form-select {
+                border: #fff solid 2px;
+                border-radius: inherit;
+                margin-bottom: 25px;
+                padding: 15px 20px;
+                font-family: poppins;
+            }
+            .form-select:focus {
+                box-shadow: inherit;
+                border: #fff solid 2px !important;
+            }
+            label{
+                color: black;
+            }
+
+        </style>
+    </head>
+    <!-- body -->
+
+    <body class="main-layout Contact_page">
+        <!-- loader  -->
+        <!--div class="loader_bg">
+            <div class="loader"><img th:src="@{/images/loading.gif}" alt="" /></div>
+        </div-->
+
+        <div class="wrapper">
+            <!-- end loader -->
+
+            <div id="content">
+                <!-- header -->
+                <header>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="full">
+                                    <a class="logo" href="#"><img th:src="@{/images/logo.png}" alt="#" /></a>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="full">
+                                    <div class="right_header_info">
+                                        <ul>
+                                            <li class="button_user"><a class="button active" th:href="@{/login}">Iniciar sesión</a><a class="button" th:href="@{/eleccion}">Elegir otro rol</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <!-- end header -->
+                <!-- footer -->
+
+
+                <footer>
+                    <div class="footer">
+                        <div class="container-fluid">
+                            <h2>Registro repartidor</h2>
+                            <br>
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+
+                                    <form class="main_form" method="post" th:action="@{/save3}" enctype="multipart/form-data" th:object="${usuario}">
+                                        <input type="hidden" th:value="${movilidad2}" id="movilidad2" name="movilidad2">
+                                        <input class="form-control" type="hidden" name="distrito" id="distrito">
+                                        <input class="form-control" type="hidden" name="iddistrito" id="iddistrito">
+                                        <input class="form-control" type="hidden" id="direccion_real" name="direccion_real" value="">
+
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Movilidad</label>
+                                                <select type="text" class="form-select" id="movilidad2"  style="width: 100%;" onchange="window.location=this.options[this.selectedIndex].value">
+                                                    <option th:selected="${movilidad2 == null}" disabled="disabled">Seleccione su movilidad</option>
+                                                    <option th:selected="${movilidad2 == 'moto'}" value="new3?movilidad2=moto" text="Moto">Moto</option>
+                                                    <option th:selected="${movilidad2 == 'bicimoto'}" value="new3?movilidad2=bicimoto" text="Bicimoto">Bicimoto</option>
+                                                    <option th:selected="${movilidad2 == 'bicicleta'}" value="new3?movilidad2=bicicleta" text="Bicicleta">Bicicleta</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"
+                                                 th:if="${movilidad2 == 'moto' || movilidad2 == 'bicimoto' }">
+                                                <label>Placa</label>
+                                                <div th:if="${placaVal != null}" th:text="${placaVal}" class="text-danger"></div>
+                                                <input class="form-control" placeholder="Placa" th:value="${placa}" name="placa" id="placa">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"
+                                                 th:if="${movilidad2 == 'moto' || movilidad2 == 'bicimoto'  }">
+                                                <label>Licencia</label>
+                                                <div th:if="${licenciaVal != null}" th:text="${licenciaVal}" class="text-danger"></div>
+                                                <input class="form-control" placeholder="Licencia de conducir" th:value="${licencia}" name="licencia" id="licencia">
+                                            </div>
+
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Correo</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                                <div th:if="${msgC != null}" th:text="${msgC}" class="text-danger"></div>
+                                                <input class="form-control" placeholder="Correo" type="text" th:field="*{email}">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Nombre</label>
+                                                <input class="form-control" placeholder="Nombres" type="text" th:field="*{nombre}">
+                                                <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Apellidos</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></div>
+                                                <input class="form-control" placeholder="Apellidos" type="text" th:field="*{apellidos}">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Dni</label>
+                                                <div th:if="${errordni != null}" th:text="${errordni}" class="text-danger"></div>
+                                                <input class="form-control" placeholder="DNI" type="text" th:field="*{dni}">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Celular</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+                                                <input class="form-control" placeholder="Celular" type="text" th:field="*{telefono}">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label class="form-label">Fecha de nacimiento</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}"></div>
+                                                <input placeholder="Fecha de nacimiento"  type="date" class="form-control" th:field="*{fechaNacimiento}">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label class="form-label">Sexo</label>
+                                                <select type="text" class="form-select" th:field="*{sexo}" style="width: 100%;">
+                                                    <option value="Masculino" text="Masculino">Masculino</option>
+                                                    <option value="Femenino" text="Femenino">Femenino</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" style="display: none">
+                                                <select id="distrito-lista">
+                                                    <option th:each="distrito:${listadistritos}"
+                                                            th:text="${distrito.nombredistrito}"
+                                                            th:value="${distrito.iddistritos}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label id="direccion-texto">Dirección: Debe hacer click para validar</label>
+                                                <div id="error-distrito" class="text-danger"></div>
+                                                <div id="error-direccion" class="text-danger"></div>
+                                                <div class="input-group">
+                                                    <input class="form-control" placeholder="Direccion" type="text" id="direccion" name="direccion" th:if="${direction==null}" disabled/>
+                                                    <input class="form-control" placeholder="Direccion" type="text" id="direccion" name="direccion" th:unless="${direction==null}" th:value="${direction}" disabled/>
+                                                    <span class="input-group-append"><img onclick="geocode()" th:src="@{/images/locationcursor.jpg}" width="60px"></span>
+                                                </div>
+                                            </div>
+                                            </br>
+                                            <div style="margin-top: 20px" class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Contraseña</label>
+                                                <div style="color: white;">Debe de tener como minimo 8 caracteres incluyendo como minimo 1 digito y 1 caracter especial</div>
+                                                <div th:if="${msgc1 != null}" th:text="${msgc1}" class="alert alert-danger" role="alert"></div>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('contraseniaHash')}" th:errors="*{contraseniaHash}"></div>
+                                                <input class="form-control" placeholder="Contraseña" type="password" th:field="*{contraseniaHash}">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Confirmar Contraseña</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('contraseniaHash')}" th:errors="*{contraseniaHash}"></div>
+                                                <div th:if="${msgc2 != null}" th:text="${msgc2}" class="alert alert-danger" role="alert"></div>
+                                                <input class="form-control" placeholder="Confirmar Contraseña" type="password" name="password2" id="password2">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label for="archivo">Foto</label>
+                                                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+                                                <input type="file" class="form-control" id="archivo" name="archivo"/>
+                                            </div>
+
+
+
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <button id="registrar" class="send" type="submit" style="text-align: center;display: none" >Registrarse</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="img-box">
+                                        <figure><img th:src="@{/images/unnamed.png}" alt="img" /></figure>
+                                        <h4 id="text-map" style="display: none">Puede mover el cursor para cambiar de dirección</h4>
+                                        <div id="map"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </br>
+                    </div>
+                    <div class="copyright">
+                        <div class="container">
+                            <p>© 2021 Todos los derechos reservados. Propiedad de "Troyanos de Software"</p>
+                        </div>
+                    </div>
+
+                </footer>
+                <!-- end footer -->
+
+            </div>
+        </div>
+        <div class="overlay"></div>
+
+        <script>
+            function validarDistrito(distrito){
+                var listaDistritos=document.getElementById("distrito-lista");
+                var real=distrito.trim();
+                for(var i=0;i<listaDistritos.length;i++){
+                    if(real==listaDistritos.options[i].text){
+                        document.getElementById("iddistrito").value=listaDistritos.options[i].value;
+
+                        document.getElementById("error-distrito").innerHTML=null;
+                        break;
+                    }
+                    else if(real=="Cercado de Lima"){
+                        document.getElementById("iddistrito").value=listaDistritos.options[16].value;
+                        console.log(listaDistritos.options[16].text);
+                        document.getElementById("error-distrito").innerHTML=null;
+                    }
+                    else{
+                        document.getElementById("iddistrito").value=-1;
+                        document.getElementById("error-distrito").innerHTML="Distrito no válido";
+                    }
+                }
+            }
+        </script>
+        <script>
+            function geocode(){
+                document.getElementById("registrar").style.display="block";
+                document.getElementById("text-map").style.display="block";
+                document.getElementById("direccion-texto").innerHTML="Direccion";
+                var direccion = document.getElementById("direccion").value;
+                var location = direccion+" lima peru";
+                axios.get("https://maps.googleapis.com/maps/api/geocode/json",{
+                    params:{
+                        address:location,
+                        key:"AIzaSyBqkUEl88MtZjxMynI9qCjIMHAtIoxxNjc"
+                    }
+                })
+                    .then(function(response){
+                        var latinput = response.data.results[0].geometry.location.lat;
+                        var lnginput = response.data.results[0].geometry.location.lng;
+                        var coords= {lat: latinput, lng:lnginput};
+                        var options ={
+                            zoom:16,
+                            center: coords
+                        }
+                        var map = new google.maps.Map(document.getElementById("map"),options);
+                        marker = addMarker(coords,map);
+                        axios.get("https://maps.googleapis.com/maps/api/geocode/json",{
+                            params:{
+                                latlng:marker.getPosition().lat()+","+marker.getPosition().lng(),
+                                key:"AIzaSyBLdwYvQItwrhBKLPqbEumrEURYFFlks-Y"
+                            }
+                        })
+                            .then(function(response){
+                                var addressComponents=response.data.results[0].address_components;
+                                var compoundCode=response.data.plus_code.compound_code;
+                                var identificador=compoundCode.split(",")[0].split(" ");
+                                var distrito="";
+                                for(var i=1;i<identificador.length;i++){
+                                    distrito+=identificador[i]+" ";
+                                }
+                                console.log(distrito);
+                                validarDistrito(distrito);
+                                for(var i=0;i < addressComponents.length;i++){
+                                    if(addressComponents[i].types[0]=="street_number"){
+                                        var numero=addressComponents[i].long_name;
+                                    }
+                                    if(addressComponents[i].types[0]=="route"){
+                                        var calle=addressComponents[i].long_name;
+                                    }
+                                }
+                                if(calle===undefined||numero===undefined){
+                                    document.getElementById("direccion").value="";
+                                    document.getElementById("direccion_real").value="";
+                                    document.getElementById("error-direccion").className="text-danger";
+                                    document.getElementById("error-direccion").innerHTML="Dirección no reconocida";
+                                }
+                                else{
+                                    document.getElementById("direccion").value=calle+" "+numero+", "+distrito;
+                                    document.getElementById("direccion_real").value=calle+" "+numero+", "+distrito;
+                                    document.getElementById("error-direccion").className="text-success";
+                                    document.getElementById("error-direccion").innerHTML="Dirección reconocida";
+                                }
+                            })
+                        google.maps.event.addListener(marker, "dragend", function (evt) {
+                            var latOutput = evt.latLng.lat();
+                            console.log(latOutput);
+                            var lngOutput = evt.latLng.lng();
+                            console.log(lngOutput);
+                            map.panTo(evt.latLng);
+                            axios.get("https://maps.googleapis.com/maps/api/geocode/json",{
+                                params:{
+                                    latlng:latOutput+","+lngOutput,
+                                    key:"AIzaSyBLdwYvQItwrhBKLPqbEumrEURYFFlks-Y"
+                                }
+                            })
+                                .then(function(response){
+                                    console.log(response);
+                                    var addressComponents=response.data.results[0].address_components;
+                                    var compoundCode=response.data.plus_code.compound_code;
+                                    var identificador=compoundCode.split(",")[0].split(" ");
+                                    var distrito="";
+                                    for(var i=1;i<identificador.length;i++){
+                                        distrito+=identificador[i]+" ";
+                                    }
+                                    console.log(distrito);
+                                    validarDistrito(distrito);
+                                    for(var i=0;i < addressComponents.length;i++){
+                                        if(addressComponents[i].types[0]=="street_number"){
+                                            var numero=addressComponents[i].long_name;
+                                        }
+                                        if(addressComponents[i].types[0]=="route"){
+                                            var calle=addressComponents[i].long_name;
+                                        }
+                                    }
+                                    if(calle===undefined||numero===undefined){
+                                        document.getElementById("direccion").value="";
+                                        document.getElementById("direccion_real").value="";
+                                        document.getElementById("error-direccion").className="text-danger";
+                                        document.getElementById("error-direccion").innerHTML="Dirección no reconocida";
+                                    }
+                                    else{
+                                        document.getElementById("direccion").value=calle+" "+numero+", "+distrito;
+                                        document.getElementById("direccion_real").value=calle+" "+numero+", "+distrito;
+                                        document.getElementById("error-direccion").className="text-success";
+                                        document.getElementById("error-direccion").innerHTML="Dirección reconocida";
+                                    }
+
+                                })
+                        });
+
+                    })
+                    .catch(function(error){
+                        console.log(error)
+                    })
+            }
+        </script>
+        <script>
+            function addMarker(coords,map) {
+                var marker = new google.maps.Marker({
+                    position: coords,
+                    map:map,
+                    draggable:true
+                });
+                return marker;
+            }
+        </script>
+
+    </body>
+
+</html>

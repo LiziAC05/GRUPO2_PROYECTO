@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/adminRestaurante.html :: header( title = 'Cuenta')"></head>
+<style>
+    label{
+        color: white;
+    }
+</style>
+
+<!-- body -->
+<body class="main-layout Recipes_page">
+<div class="wrapper">
+    <div class="sidebar">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div id="dismiss">
+                <i class="fa fa-arrow-left"></i>
+            </div>
+            <ul class="list-unstyled components">
+                <li><a th:href="@{/adminrest/perfil}">Perfil</a></li>
+                <li><a th:href="@{/adminrest/menu}">Menu</a></li>
+                <li><a th:href="@{/adminrest/cupones}">Cupones</a></li>
+                <li><a th:href="@{/adminrest/pedidos}">Pedidos</a></li>
+                <li><a th:href="@{/adminrest/calificaciones}">Calificaciones</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="content">
+        <!-- header -->
+        <header>
+            <div th:replace="fragments/adminRestaurante.html :: navbar"></div>
+        </header>
+        <!-- end header -->
+
+        <div class="yellow_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="title">
+                            <h2>Mi Perfil</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- about -->
+        <div class="about">
+            <div class="container">
+                <div style="font-size: 20px" th:if="${suceso != null}" th:text="${suceso}" class="alert-success"></div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 about_img_boxpdnt">
+                                <figure align="center"><img style="width:500px;height:500px" th:src="@{/adminrest/imagen}" alt="#/"></figure>
+                                <form method="post" th:action="@{'/adminrest/guardarrestedit'}" th:object="${restaurante}" enctype="multipart/form-data">
+                                    <input type="hidden" th:field="*{usuario.idusuarios}">
+                                    <div class="about_box" style="height: 640px">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <label>Nombre del restaurante</label>
+                                            <input class="form-control" th:value="*{nombre}" type="text" disabled>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <label>RUC del restaurante</label>
+                                            <input class="form-control" th:value="${ruc}" type="text" disabled>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <label>Direccion del restaurante</label>
+                                            <input class="form-control" th:value="${direccion_rest}" type="text" disabled>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                            <label>Imagen</label>
+                                            <input class="form-control" type="file" id="imagen" name="imagen" >
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div style="padding-left: 15px;padding-top: 25px">
+                                                    <button class="send" type="submit"
+                                                            style="font-size: 16px;background: #d8b00f;width: 200px">Guardar cambios</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-3">
+                                                <div style="padding-left: 15px;padding-top: 25px">
+                                                    <a class="send" type="button" th:href="@{/adminrest/categoriaedit}"
+                                                            style="font-size: 16px;background: #d8b00f;width: 200px;text-align: center;color:black;">Categorias</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                                <form method="post" th:action="@{'/adminrest/guardaradminedit'}" th:object="${usuario}">
+                                    <div class="about_box" style="padding: 64px 40px">
+                                        <div>
+                                            <input th:field="*{idusuarios}" th:value="*{idusuarios}" type="hidden">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Correo</label>
+                                                <input class="form-control" type="text" th:value="${datos.email}" disabled>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Nombres</label>
+                                                <input class="form-control"type="text" th:value="${datos.nombre}" disabled>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Apellidos</label>
+                                                <input class="form-control"type="text" th:value="${datos.apellidos}" disabled>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>DNI</label>
+                                                <input class="form-control" type="text" th:value="${datos.dni}"  disabled>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Número de celular</label>
+                                                <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+                                                <input class="form-control" type="text" id="telefono" name="telefono" th:unless="${usuario.telefono!=null}" th:value="${telefono}">
+                                                <input class="form-control" type="text" id="telefono" name="telefono" th:if="${usuario.telefono!=null}" th:value="${usuario.telefono}">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Fecha de nacimiento</label>
+                                                <input class="form-control" type="date" th:value="${datos.fechanacimiento}" disabled>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Dirección</label><br><a th:href="@{'/adminrest/editardireccion'}">Editar dirección</a><br>
+                                                <input class="form-control" type="text" th:if="${listadirecciones.get(0).distrito.nombredistrito.equals('Lima District')}" th:value="${listadirecciones.get(0).direccion + ', Cercado de Lima'}" disabled>
+                                                <input class="form-control" type="text" th:unless="${listadirecciones.get(0).distrito.nombredistrito.equals('Lima District')}" th:value="${listadirecciones.get(0).direccion + ', '+listadirecciones.get(0).distrito.nombredistrito}" disabled>
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Contraseña</label>
+                                                <div th:if="${msgpasserror2 != null}" th:text="${msgpasserror2}" class="text-danger"></div>
+                                                <div th:if="${msgpasserror != null}" th:text="${msgpasserror}" class="text-danger"></div>
+                                                <input placeholder="Contraseña" class="form-control" type="password" th:field="*{contraseniaHash}">
+                                            </div>
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                <label>Confirmar contraseña</label>
+                                                <input placeholder="Confirmar contraseña" class="form-control" type="password" id="pass2" name="pass2">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div style="padding-left: 15px;padding-top: 25px">
+                                                        <button class="send" type="submit"
+                                                                style="font-size: 16px;background: #d8b00f;width: 200px">Guardar cambios</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3"></div>
+                                                <div class="col-md-3">
+                                                    <div style="padding-left: 15px;padding-top: 25px">
+                                                        <a class="send" type="button" th:href="@{/adminrest/perfil}"
+                                                                style="text-align: center; font-size: 16px;background: #d8b00f;width: 200px;color: black">Regresar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end about -->
+        <!-- footer -->
+        <fooetr>
+            <div class="footer">
+
+                <div class="copyright">
+                    <div class="container">
+                        <p>© 2021 Todos los derechos reservados</p>
+                    </div>
+                </div>
+            </div>
+        </fooetr>
+        <!-- end footer -->
+
+    </div>
+</div>
+<div class="overlay"></div>
+<!-- Javascript files-->
+<script href="/js/jquery.min.js"></script>
+<script href="/js/popper.min.js"></script>
+<script href="/js/bootstrap.bundle.min.js"></script>
+<script href="/js/owl.carousel.min.js"></script>
+<script href="/js/custom.js"></script>
+<script href="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script href="/js/jquery-3.0.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function() {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function() {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+</script>
+
+</body>
+
+</html>

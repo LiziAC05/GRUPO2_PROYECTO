@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/fragment.html :: header( title = 'Spicy')"></head>
+<!-- body -->
+
+<body class="main-layout">
+<!-- loader  -->
+<div class="loader_bg">
+    <div class="loader"><img src="images/loading.gif" alt=""/></div>
+</div>
+
+<div class="wrapper">
+    <!-- end loader -->
+
+    <div class="sidebar">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+
+            <div id="dismiss">
+                <i class="fa fa-arrow-left"></i>
+            </div>
+
+            <ul class="list-unstyled components">
+
+                <li class="active">
+                    <a th:href="@{'/repartidor'}">Home</a>
+                </li>
+                <li>
+                    <a th:href="@{'/repartidor/Reportes'}">Reportes</a>
+                </li>
+                <li>
+                    <a th:href="@{'/repartidor/PedidosDisponibles'}">Notificaciones</a>
+                </li>
+            </ul>
+
+        </nav>
+    </div>
+
+    <div id="content">
+        <!-- header -->
+        <header th:replace="fragments/fragment.html :: navbar"></header>
+        <!-- end header -->
+
+        <!-- blog -->
+        <div class="blog" style="padding-top: 115px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 th:text="${usuario.nombre} +' '+ ${ usuario.apellidos}"></h1>
+                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+                        <div th:if="${msgVerde != null}" th:text="${msgVerde}" class="alert alert-success" role="alert"></div>
+                    </div>
+                </div>
+
+                <hr>
+                <div class="row">
+                    <div class="col-12 col-md-5">
+                        <!-- imagen -->
+                        <figure><img th:src="@{/repartidor/imagen}" alt="#/"></figure>
+                    </div>
+                    <div class="col-12 col-md-7">
+                        <!-- formulario -->
+                        <form method="post" th:action="@{/repartidor/save_principal}" class="main_form"
+                              th:object="${repartidor}">
+                            <input th:field="*{idusuarios}" type="hidden">
+                            <div class="form-group">
+                                <label class="form-label">Distrito</label>
+                                <select th:field="*{distritos}" class="form-select" name="distrito" style="width: 100%;">
+                                    <option th:each="distrito : ${listadistritos}" th:value="${distrito.iddistritos}"
+                                            th:text="${distrito.nombredistrito}"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Disponibilidad</label>
+                                <select th:field="*{disponibilidad}"  class="form-select" style="width: 100%;">
+                                    <option th:value="true" th:text="Disponible"></option>
+                                    <option th:value="false" th:text="Ocupado"></option>
+                                </select>
+                            </div>
+
+                            </br>
+                            </br>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <button class="send" type="submit" style="background-color: black ;color: white">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end blog -->
+
+
+    <!-- footer -->
+    <fooetr>
+        <div class="footer">
+
+            <div class="copyright">
+                <div class="container">
+                    <p>© 2021 Todos los derechos reservados</p>
+                </div>
+            </div>
+        </div>
+    </fooetr>
+    <!-- end footer -->
+
+</div>
+</div>
+<div class="overlay"></div>
+<!-- Javascript files-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+
+<script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+
+    //    Make a whole row as clickeable
+    function rowClicked(value) {
+        location.href = "/admin/user?id=" + value;
+    }
+
+</script>
+
+<style>
+    #owl-demo .item {
+        margin: 3px;
+    }
+
+    #owl-demo .item img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            margin: 10,
+            nav: true,
+            loop: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 5
+                }
+            }
+        })
+    })
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>Spicyo</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!-- owl css -->
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+    <!-- style css -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- responsive-->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <!-- awesome fontfamily -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+<!-- body -->
+
+<body class="main-layout blog_page">
+<!-- loader  -->
+<div class="loader_bg">
+    <div class="loader"><img src="images/loading.gif" alt="" /></div>
+</div>
+
+<div class="wrapper">
+    <!-- end loader -->
+
+    <!-- Sidebar  -->
+    <div th:replace="fragments/cliente.html:: slider" class="sidebar">
+    </div>
+
+</div>
+
+    <div id="content">
+        <!-- header -->
+        <header th:replace="fragments/cliente.html :: bar"></header>
+        <!-- end header -->
+        <div class="yellow_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="title">
+                            <h2>Reportes</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- blog -->
+        <div class="blog">
+            <div class="container"th:if="${haypedidos}">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="title">
+                            <div th:if="${alerta != null}" th:text="${alerta}" class="alert alert-warning" role="alert"></div>
+                            <div th:if="${alerta2 != null}" th:text="${alerta2}" class="alert alert-warning" role="alert"></div>
+                            <div class="row">
+                                <div class="col-sm-2" style="padding-left: 63%;">
+                                    <a th:href="@{'/cliente/historialpedidosexcel' + '?id=' + ${id}}" class="btn btn-outline-success">Exportar mi historial de pedidos a excel</a>
+                                </div>
+                            </div>
+                            </br>
+                            <div class="row justify-content-center col-md-12">
+                                <div class="center-block">
+                                    <div class="col-sm-2" style="display: inline-flex;justify-content: center;">
+                                    <form class="form-group mb-3" method="post" th:action="@{/cliente/recepcionCliente}">
+                                    <div class="input-group-append">
+                                        <input type="month" id="fechaprueba" name="fechahorapedido" style="margin-right: 3%;"
+                                               th:value="${fechaseleccionada}">
+                                        <button class="btn btn-warning" type="submit">Buscar</button>
+                                        <button class="btn btn-dark" th:href="@{/clientes/reportes}" style="margin-left: 3%;">Limpiar</button>
+                                    </div>
+                                </form></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mar_bottom">
+                            <div class="blog_box">
+                                <div class="blog_img_box">
+                                    <figure><img th:src="@{/images/descarga.jpg}" alt="#"/>
+                                        <span>Top 3 de Restaurantes</span>
+                                    </figure>
+                                </div>
+
+                                <div class="container">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nombre Restaurante</th>
+                                            <th>Veces que Asistió</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="top3Rest, in : ${listaTop3Restaurantes}">
+                                            <td th:text="${in.index + 1}"></td>
+                                            <td th:text="${top3Rest.getRestaurante()}"></td>
+                                            <td th:text="${top3Rest.getVecesasistida()}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mar_bottom">
+                            <div class="blog_box">
+                                <div class="blog_img_box">
+                                    <figure><img th:src="@{/images/64bb5e41f11d3c3463f4bdc4c773d62d-plato-de-pollo-by-vexels.png}" alt="#"/>
+                                        <span>Top 3 de platos más pedidos</span>
+                                    </figure>
+                                </div>
+
+                                <div class="container">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nombre Plato</th>
+                                            <th>Veces que Pidió</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="top3platos, in : ${listaTop3Platos}">
+                                            <td th:text="${in.index + 1}"></td>
+                                            <td th:text="${top3platos.getNombreplato()}"></td>
+                                            <td th:text="${top3platos.getVecespedido()}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                            <div class="blog_box">
+                                <div class="blog_img_box">
+                                    <figure><img th:src="@{/images/2643809.png}" alt="#"/>
+                                        <span>Historial de consumo por restaurante y total</span>
+                                    </figure>
+                                </div>
+
+                                <div class="container">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nombre Restaurante</th>
+                                            <th>Veces que Asistió</th>
+                                            <th>Consumo mensual (en soles)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="historial, in : ${listaHistorialConsumo}">
+                                            <td th:text="${in.index + 1}"></td>
+                                            <td th:text="${historial.getNomrestaurante()}"></td>
+                                            <td th:text="${historial.getAsistencia()}"></td>
+                                            <td th:text="${historial.getConsumomensual()}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mar_bottom">
+                            <div class="blog_box">
+                                <div class="blog_img_box">
+                                    <figure><img th:src="@{/images/hucha_53876-25494.jpg}" alt="#"/>
+                                        <span>Dinero ahorrado por los cupones</span>
+                                    </figure>
+                                </div>
+                                <div class="container">
+                                    <p th:text="|Se ha ahorrado ${diferencia.getDiferencia()} soles|"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mar_bottom">
+                            <div class="blog_box">
+                                <div class="blog_img_box">
+                                    <figure><img th:src="@{/images/9a6b5f8bf55c5848572197757ec5f7c1-icono-de-flechas-de-tiempo-trazo-de-reloj-by-vexels.png}" alt="#"/>
+                                        <span>Tiempo medio por delivery</span>
+                                    </figure>
+                                </div>
+
+                                <div class="container">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nombre Restaurante</th>
+                                            <th>Tiempo promedio (en minutos)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="tiempoProm, in : ${listaPromedioTiempo}">
+                                            <td th:text="${in.index + 1}"></td>
+                                            <td th:text="${tiempoProm.getNombrerestaurante()}"></td>
+                                            <td th:text="${tiempoProm.getTiempopromedio()}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container" th:unless="${haypedidos}">
+                <div class="col-md-6 offset-md-3">
+                    <div class="Client_box">
+                        <h3>Aún no haz realizado ningún pedido :(</h3>
+                        <p>Te invitamos a visitar nuestros restaurantes y agregar productos a tu canasta.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- end blog -->
+
+            <!-- footer -->
+            <fooetr>
+                <div class="footer">
+
+                    <div class="copyright">
+                        <div class="container">
+                            <p>© 2021 Todos los derechos reservados</p>
+                        </div>
+                    </div>
+                </div>
+            </fooetr>
+            <!-- end footer -->
+
+        </div>
+    </div>
+</div>
+    <div class="overlay"></div>
+<!-- Javascript files-->
+
+<script th:src="@{/js/pruebacarrito.js}" ></script>
+
+<script th:src="@{/js/jquery.min.js}" ></script>
+<script th:src="@{/js/popper.min.js}" ></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" ></script>
+<script th:src="@{/js/owl.carousel.min.js}" ></script>
+<script th:src="@{/js/custom.js}" ></script>
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}" ></script>
+
+<script th:src="@{/js/jquery-3.0.0.min.js}" ></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function() {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function() {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+
+</script>
+<style>
+    #owl-demo .item{
+        margin: 3px;
+    }
+    #owl-demo .item img{
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+</body>
+
+</html>

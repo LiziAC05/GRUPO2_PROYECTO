@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment.html :: header( title = 'Resultado de búsqueda')"></head>
+<!-- body -->
+
+<body class="main-layout">
+<!-- loader  -->
+<div class="loader_bg">
+    <div class="loader"><img src="images/loading.gif" alt=""/></div>
+</div>
+
+<div class="wrapper">
+    <!-- end loader -->
+
+    <div class="sidebar">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+
+            <div id="dismiss">
+                <i class="fa fa-arrow-left"></i>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li>
+                    <a th:href="@{'/repartidor'}">Home</a>
+                </li>
+                <li>
+                    <a th:href="@{'/repartidor/Reportes'}">Reportes</a>
+                </li>
+                <li>
+                    <a th:href="@{'/repartidor/PedidosDisponibles'}">Notificaciones</a>
+                </li>
+            </ul>
+
+        </nav>
+    </div>
+
+    <div id="content">
+        <!-- header -->
+        <header th:replace="fragments/fragment.html :: navbar"></header>
+        <!-- end header -->
+
+
+        <!-- blog -->
+        <div class="blog">
+            <div class="container">
+                <h1>Resultados de búsqueda</h1>
+                <form method="post" th:action="@{/repartidor/Buscador}">
+                    <input name="valorBuscado" class="form-floating" style="padding: 5px; width: 82%;"
+                           type="text" th:placeholder="${valorBuscado}"/>
+                    <button class="btn btn-dark" type="submit">Buscar</button>
+                    <button class="btn btn-warning"><a class="button active" th:href="@{'/repartidor/Reportes'}">Limpiar</a></button>
+                </form>
+                <br> </br>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">RESTAURANTE</th>
+                    <th scope="col">DISTRITO DEL RESTAURANTE</th>
+                    <th scope="col">LUGAR DE DESTINO</th>
+                    <th scope="col">COMISIÓN S/.</th>
+                    <th scope="col">CALIFICACION</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="registro, info : ${listaFindReporte}">
+                    <td th:text="${info.index + 1}"></td>
+                    <td th:text="${registro.getNombre()}"></td>
+                    <td th:text="${registro.getRestaurantedistrito()}"></td>
+                    <td th:text="${registro.getClienteubicacion()}"></td>
+                    <td th:text="${registro.getComisionrepartidor()}+'.00'"></td>
+                    <td th:text="${registro.getCalificacionrepartidor()}"></td>
+                </tr>
+                </tbody>
+            </table>
+                <br> </br>
+                <div class="row">
+                    <div class="col-8">
+                        <h1>Reporte de Ganancia Mensual</h1>
+                    </div>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">MES</th>
+                        <th scope="col">AÑO</th>
+                        <th scope="col">COMISIÓN MENSUAL</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="comision : ${listaComisionMensual}">
+                        <td th:text="${comision.getMes()}" style="width: 33%;"></td>
+                        <td th:text="${comision.getYear()}" style="width: 33%;"></td>
+                        <td th:text="${comision.getComision_mensual()}" style="width: 33%;"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+    </div>
+</div>
+<!-- end blog -->
+
+
+
+
+
+<!-- footer -->
+<fooetr>
+    <div class="footer">
+        <div class="container-fluid">
+            <div class="copyright">
+                <div class="container">
+                    <p>© 2021 Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</fooetr>
+<!-- end footer -->
+
+</div>
+</div>
+<div class="overlay"></div>
+<!-- Javascript files-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+
+<script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+
+    //    Make a whole row as clickeable
+    function rowClicked(value) {
+        location.href = "/admin/user?id=" + value;
+    }
+
+</script>
+
+<style>
+    #owl-demo .item {
+        margin: 3px;
+    }
+
+    #owl-demo .item img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            margin: 10,
+            nav: true,
+            loop: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 5
+                }
+            }
+        })
+    })
+</script>
+
+</body>
+
+</html>

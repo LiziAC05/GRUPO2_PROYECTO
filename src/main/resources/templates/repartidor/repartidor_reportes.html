@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment.html :: header( title = 'Reporte general')"></head>
+
+
+<body class="main-layout">
+<!-- loader  -->
+<div class="loader_bg">
+    <div class="loader"><img src="images/loading.gif" alt=""/></div>
+</div>
+
+<div class="wrapper">
+    <!-- end loader -->
+
+    <div class="sidebar">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+
+            <div id="dismiss">
+                <i class="fa fa-arrow-left"></i>
+            </div>
+
+            <ul class="list-unstyled components">
+
+                <li class="active">
+                    <a th:href="@{'/repartidor'}">Home</a>
+                </li>
+                <li>
+                    <a th:href="@{'/repartidor/Reportes'}">Reportes</a>
+                </li>
+                <li>
+                    <a th:href="@{'/repartidor/PedidosDisponibles'}">Notificaciones</a>
+                </li>
+            </ul>
+
+        </nav>
+    </div>
+
+    <div id="content">
+        <!-- header -->
+        <header th:replace="fragments/fragment.html :: navbar"></header>
+        <!-- end header -->
+
+
+        <!-- blog -->
+        <div class="blog" style="padding-top: 77px;">
+            <div class="container">
+                <div class="d-flex justify-content-end">
+                    <a th:href="@{'/repartidor/excelgananciamensual'+ '?id=' + ${id}}" class="btn btn-outline-success">Exportar a Excel</a>
+                </div>
+                <h1>Reportes</h1>
+                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                <form method="post" th:action="@{/repartidor/Buscador}">
+                    <input name="valorBuscado" class="form-floating" style="padding: 5px; width: 82%;"
+                           type="text" placeholder="Nombre del restaurante o distrito del restaurante"/>
+                    <button class="btn btn-dark" type="submit">Buscar</button>
+                    <button class="btn btn-warning"><a class="button active" th:href="@{'/repartidor/Reportes'}">Limpiar</a></button>
+                </form>
+                <br>
+
+
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">RESTAURANTE</th>
+                        <th scope="col">DISTRITO DEL RESTAURANTE</th>
+                        <th scope="col">LUGAR DE DESTINO</th>
+                        <th scope="col">COMISIÓN S/.</th>
+                        <th scope="col">CALIFICACION</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pedidoDisponible, info : ${listaReporte1}">
+                        <td th:text="${10*currentPage + info.index -9}"></td>
+                        <td th:text="${pedidoDisponible.getNombre()}"></td>
+                        <td th:text="${pedidoDisponible.getRestaurantedistrito()}"></td>
+                        <td th:text="${pedidoDisponible.getClienteubicacion()}"></td>
+                        <td th:text="${pedidoDisponible.getComisionrepartidor()} + '.00'"></td>
+                        <td th:text="${pedidoDisponible.getCalificacionrepartidor()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br> </br>
+
+                <div th:if="${maxNumberOfPages} != 0" class="row">
+                    <nav aria-label="Page navigation example" class = "mx-auto">
+                        <ul class="pagination justify-content-center">
+
+                            <!--  BOTON ANTERIOR -->
+                            <li class="page-item disabled" th:if="${currentPage eq 1 }">
+                                <span class="page-link">Anterior</span>
+                            </li>
+                            <li class="page-item" th:unless="${currentPage eq 1}">
+                                <a class="page-link"
+                                   th:href="@{/repartidor/Reportes(page=${currentPage - 1})}">Anterior</a>
+                            </li>
+
+                            <!-- BOTONES NUMEROS -->
+                            <li th:each="i : ${#numbers.sequence( 1, maxNumberOfPages )}"
+                                th:class="${ i == currentPage ? 'page-item active .bg-secondary' : 'page-item' }">
+                                <a class="page-link"  th:href="@{/repartidor/Reportes(page=${i})}"
+                                   th:text="${i}"
+                                ></a>
+                            </li>
+
+                            <!--  BOTON SIGUIENTE -->
+                            <li class="page-item disabled" th:if="${currentPage eq maxNumberOfPages }">
+                                <span class="page-link">Siguiente</span>
+                            </li>
+                            <li class="page-item" th:unless="${currentPage eq maxNumberOfPages}">
+                                <a class="page-link" th:href="@{/repartidor/Reportes(page=${currentPage + 1})}">Siguiente</a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+
+                <br>
+                <div class="row">
+                    <div class="col-8">
+                        <h1>Reporte de Ganancia Mensual</h1>
+                    </div>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">MES</th>
+                        <th scope="col">AÑO</th>
+                        <th scope="col">COMISIÓN MENSUAL</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="comision : ${listaComisionMensual}">
+                        <td th:text="${comision.getMes()}" style="width: 33%;"></td>
+                        <td th:text="${comision.getYear()}" style="width: 33%;"></td>
+                        <td th:text="${comision.getComision_mensual()}" style="width: 33%;"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>
+    </div>
+    <!-- end blog -->
+
+
+
+
+
+    <!-- footer -->
+    <fooetr>
+        <div class="footer">
+
+            <div class="copyright">
+                <div class="container">
+                    <p>© 2021 Todos los derechos reservados</p>
+                </div>
+            </div>
+        </div>
+    </fooetr>
+    <!-- end footer -->
+
+</div>
+</div>
+<div class="overlay"></div>
+<!-- Javascript files-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+
+<script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+
+    //    Make a whole row as clickeable
+    function rowClicked(value) {
+        location.href = "/admin/user?id=" + value;
+    }
+
+</script>
+
+<style>
+    #owl-demo .item {
+        margin: 3px;
+    }
+
+    #owl-demo .item img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+
+</body>
+
+</html>

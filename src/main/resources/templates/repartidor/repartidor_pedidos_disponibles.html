@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragment.html :: header( title = 'Pedidos Disponibles')"></head>
+
+
+<body class="main-layout">
+<!-- loader  -->
+<div class="loader_bg">
+    <div class="loader"><img src="images/loading.gif" alt=""/></div>
+</div>
+
+<div class="wrapper">
+    <!-- end loader -->
+
+    <div class="sidebar">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+
+            <div id="dismiss">
+                <i class="fa fa-arrow-left"></i>
+            </div>
+
+            <ul class="list-unstyled components">
+
+                <li>
+                    <a th:href="@{'/repartidor'}">Home</a>
+                </li>
+                <li>
+                    <a th:href="@{'/repartidor/Reportes'}">Reportes</a>
+                </li>
+                <li>
+                    <a th:href="@{'/repartidor/PedidosDisponibles'}">Notificaciones</a>
+                </li>
+            </ul>
+
+        </nav>
+    </div>
+
+    <div id="content">
+        <!-- header -->
+        <header th:replace="fragments/fragment.html :: navbar"></header>
+        <!-- end header -->
+
+        <!-- blog -->
+        <div class="blog" style="padding-top: 115px;">
+            <div class="container">
+                <h1>Pedidos disponibles</h1>
+                <div th:if="${msg != null}" th:text="${msg}" class="alert alert-danger" role="alert"></div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col"># PEDIDO</th>
+                        <th scope="col">RESTAURANTE</th>
+                        <th scope="col">LUGAR DE RECOJO</th>
+                        <th scope="col">LUGAR DE DESTINO</th>
+                        <th scope="col">COMISIÓN S/.</th>
+                        <th scope="col">S/. TOTAL</th>
+                        <th scope="col">Ver detalles</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="pedidoDisponible, info : ${listaPedidosDisponibles}">
+                        <td th:text="${10*currentPage + info.index -9}"></td>
+                        <td th:text="${pedidoDisponible.getrestaurante()}"></td>
+                        <td th:text="${pedidoDisponible.getdistritorestaurante()}"></td>
+                        <td th:text="${pedidoDisponible.getdireccioncliente()}"></td>
+                        <td th:text="${pedidoDisponible.getcomision()} + '.00'"></td>
+                        <td th:text="${pedidoDisponible.getmonto()} + '0'"></td>
+                        <td><a class="btn btn-dark"
+                               th:href="@{'/repartidor/VerDetalles' + '?id=' + ${pedidoDisponible.getidpedidos()}}">Ver
+                            detalles</a></td>
+                        <td><a class="btn btn-warning"
+                               th:href="@{'/repartidor/AceptaPedido' + '?idpedido=' + ${pedidoDisponible.getidpedidos()}}">Aceptar
+                            pedido</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div th:if="${maxNumberOfPages} != 0" class="row">
+                    <nav aria-label="Page navigation example" class = "mx-auto">
+                        <ul class="pagination justify-content-center">
+
+                            <!--  BOTON ANTERIOR -->
+                            <li class="page-item disabled" th:if="${currentPage eq 1 }">
+                                <span class="page-link">Anterior</span>
+                            </li>
+                            <li class="page-item" th:unless="${currentPage eq 1}">
+                                <a class="page-link"
+                                   th:href="@{/repartidor/PedidosDisponibles(page=${currentPage - 1})}">Anterior</a>
+                            </li>
+
+                            <!-- BOTONES NUMEROS -->
+                            <li th:each="i : ${#numbers.sequence( 1, maxNumberOfPages )}"
+                                th:class="${ i == currentPage ? 'page-item active .bg-secondary' : 'page-item' }">
+                                <a class="page-link"  th:href="@{/repartidor/PedidosDisponibles(page=${i})}"
+                                   th:text="${i}"
+                                ></a>
+                            </li>
+
+                            <!--  BOTON SIGUIENTE -->
+                            <li class="page-item disabled" th:if="${currentPage eq maxNumberOfPages }">
+                                <span class="page-link">Siguiente</span>
+                            </li>
+                            <li class="page-item" th:unless="${currentPage eq maxNumberOfPages}">
+                                <a class="page-link" th:href="@{/repartidor/PedidosDisponibles(page=${currentPage + 1})}">Siguiente</a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- end blog -->
+
+
+    <!-- footer -->
+    <fooetr>
+        <div class="footer">
+
+            <div class="copyright">
+                <div class="container">
+                    <p>© 2021 Todos los derechos reservados</p>
+                </div>
+            </div>
+        </div>
+    </fooetr>
+    <!-- end footer -->
+
+</div>
+</div>
+<div class="overlay"></div>
+<!-- Javascript files-->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/custom.js}"></script>
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+
+<script th:src="@{/js/jquery-3.0.0.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+
+    //    Make a whole row as clickeable
+    function rowClicked(value) {
+        location.href = "/admin/user?id=" + value;
+    }
+
+</script>
+
+<style>
+    #owl-demo .item {
+        margin: 3px;
+    }
+
+    #owl-demo .item img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            margin: 10,
+            nav: true,
+            loop: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 5
+                }
+            }
+        })
+    })
+</script>
+
+</body>
+
+</html>

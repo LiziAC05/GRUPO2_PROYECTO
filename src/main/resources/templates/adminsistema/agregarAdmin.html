@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>Spicyo</title>
+    <meta name="author" content="lapad10s">
+
+    <!-- bootstrap css -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <!-- owl css -->
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}"/>
+    <!-- style css -->
+    <link rel="stylesheet" th:href="@{/css/styleAdminView.css}" />
+    <!-- responsive-->
+    <link rel="stylesheet" th:href="@{/css/responsive.css}" />
+    <!-- awesome fontfamily -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <style>
+        .form-select:focus {
+            border-color: #ffffff !important;
+            box-shadow: 0 0 0 .2rem rgba(255, 255, 255, .25);
+        }
+        .form-select {
+            border: #fff solid 2px;
+            border-radius: inherit;
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            font-family: poppins;
+        }
+        .form-select:focus {
+            box-shadow: inherit;
+            border: #fff solid 2px !important;
+        }
+        label{
+            color: black;
+        }
+        #owl-demo .item{
+            margin: 3px;
+        }
+        #owl-demo .item img{
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+
+<body class="main-layout">
+
+
+<div class="wrapper">
+
+    <div th:replace="fragments/adminSistema.html:: slider" class="sidebar">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+
+            <div id="dismiss">
+                <i class="fa fa-arrow-left"></i>
+            </div>
+
+            <ul class="list-unstyled components">
+
+                <li class="active">
+                    <a href="index.html">Usuarios actuales</a>
+                </li>
+                <li>
+                    <a href="GestionCuentasPrincipal.html">Gestion de nuevas cuentas</a>
+                </li>
+                <li>
+                    <a href="ADMIN_Reportes.html">Reportes</a>
+                </li>
+            </ul>
+
+        </nav>
+    </div>
+
+    <div id="content">
+        <!-- header -->
+        <header>
+            <div th:replace="fragments/adminSistema.html:: barra" class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="full">
+                            <a class="logo" href="index.html"><img th:src="@{/images/logo.png}" alt="#" /></a>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="full">
+                            <div class="right_header_info">
+                                <ul>
+                                    <li class="dinone"><a href="#">Usuarios Actuales</a></li>
+                                    <li class="dinone"><a href="GestionCuentasPrincipal.html">Gestión de nuevas cuentas</a></li>
+                                    <li class="dinone"><a href="#">Reportes</a></li>
+                                    <li class="button_user"><a class="button active" href="#login.html">Mi cuenta</a><a class="button" href="#">Logout</a></li>
+                                    <li>
+                                        <button type="button" id="sidebarCollapse">
+                                            <img th:src="@{/images/menu_icon.png}" alt="#">
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+</div>
+
+
+<!-- blog -->
+<fooetr>
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Añadir Nuevo Administrador</h2>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-12 col-md-5">
+                    <!-- imagen -->
+                    <img th:src="@{/images/userImage.jpg}">
+                </div>
+                <div class="col-12 col-md-7">
+                    <!-- formulario -->
+                    <form  method="post" th:action="@{agregarAdmin}" th:object="${usuario}">
+                        <input class="form-control" type="hidden" id="rol" name="rol" value="AdminSistema">
+                        <input class="form-control" type="hidden" id="cuentaActiva" name="cuentaActiva" value="1">
+
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                            <input class="form-control" placeholder="Nombre" type="text" th:field="*{nombre}">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Apellidos</label>
+                            <div class="text-danger" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></div>
+                            <input class="form-control" placeholder="Apellidos" type="text" th:field="*{apellidos}">
+                        </div>
+                        <div class="form-group">
+                            <label>Correo</label>
+                            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                            <p class="text-danger" th:if="${emailUnico != null}" th:text="${emailUnico}"></p>
+                            <input class="form-control" placeholder="Correo" type="text" th:field="*{email}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>DNI</label>
+                            <p class="text-danger" th:if="${dniValido != null}" th:text="${dniValido}"></p>
+                            <div class="text-danger" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>
+                            <input class="form-control" placeholder="DNI" type="text" th:field="*{dni}">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Telefono</label>
+                            <div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
+                            <input class="form-control" placeholder="Telefono" type="number" th:field="*{telefono}">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha Nacimiento</label>
+                            <div class="text-danger" th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}"></div>
+                            <input class="form-control"  type="date" th:field="*{fechaNacimiento}">
+                        </div>
+                        <div class="form-group">
+                            <label>Sexo</label>
+                            <div class="text-danger" th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></div>
+                            <div th:if="${sexoValido != null}" th:text="${sexoValido}" class="text-danger"></div>
+                            <select class="form-select" placeholder="Sexo" type="text" th:field="*{sexo}" style="width: 100%;">
+                                <option value="Masculino" text="Masculino">Masculino</option>
+                                <option value="Femenino" text="Femenino">Femenino</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contraseña</label>
+                            <div style="color: white;">Debe de tener como minimo 8 caracteres incluyendo como minimo mayusculas, minusculas, 1 digito y 1 caracter especial </div>
+                            <div th:if="${contras != null}" th:text="${contras}" class="text-danger"></div>
+                            <div th:if="${contras2 != null}" th:text="${contras2}" class="text-danger"></div>
+                            <div class="text-danger" th:if="${#fields.hasErrors('contraseniaHash')}" th:errors="*{contraseniaHash}"></div>
+                            <input class="form-control" placeholder="Contraseña" type="password" th:field="*{contraseniaHash}">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirma contraseña</label>
+                            <input class="form-control" placeholder="Confirmar contraseña" type="password" id="password2" name="password2">
+                        </div>
+
+                        <button type="submit" class="btn btn-warning">Agregar usuario</button>
+                        <a th:href="@{'/admin/gestionCuentas'}" class="btn btn-light">Cancelar</a>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            <div class="container">
+                <p>© 2021 Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </div>
+</fooetr>
+
+
+</div>
+</div>
+<div class="overlay"></div>
+
+<!-- Javascript files-->
+<script th:src="@{/js/jquery.min.js}" ></script>
+<script th:src="@{/js/popper.min.js}" ></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" ></script>
+<script th:src="@{/js/owl.carousel.min.js}" ></script>
+<script th:src="@{/js/custom.js}" ></script>
+<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}" ></script>
+<script th:src="@{/js/jquery-3.0.0.min.js}" ></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function() {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function() {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+</script>
+
+
+</body>
+
+</html>
